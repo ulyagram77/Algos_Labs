@@ -1,2 +1,0 @@
-/usr/bin/ar qc libtask_manager.a CMakeFiles/task_manager.dir/task_manager.c.o
-/usr/bin/ranlib libtask_manager.a

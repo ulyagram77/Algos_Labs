@@ -1,2 +1,0 @@
-/usr/bin/ar qc libgeneral_utils.a CMakeFiles/general_utils.dir/general_utils.c.o
-/usr/bin/ranlib libgeneral_utils.a

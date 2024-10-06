@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/main.dir/main.c.o -o main  libs/task_manager/libtask_manager.a tasks/libtasks.a libs/general_utils/libgeneral_utils.a libs/task_manager/libtask_manager.a
