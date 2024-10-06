@@ -1,0 +1,32 @@
+{
+    "files.associations": {
+        "charconv": "c",
+        "chrono": "c",
+        "random": "c",
+        "limits": "c",
+        "semaphore": "c",
+        "algorithm": "c",
+        "stdlib.h": "c",
+        "array": "c",
+        "hash_map": "c",
+        "hash_set": "c",
+        "bitset": "c",
+        "string_view": "c",
+        "format": "c",
+        "initializer_list": "c",
+        "span": "c",
+        "cstdlib": "c",
+        "stdio.h": "c",
+        "dynamic_array.h": "c",
+        "time.h": "c",
+        "string": "c",
+        "dynamic_matrix.h": "c",
+        "*.tcc": "c",
+        "task_utils.h": "c",
+        "string.h": "c",
+        "linked_list.h": "c",
+        "list": "c",
+        "complex": "c",
+        "general_utils.h": "c"
+    }
+}

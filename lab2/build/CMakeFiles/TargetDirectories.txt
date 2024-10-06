@@ -1,0 +1,12 @@
+/home/kyrylo/Documents/university/Algos/lab2/build/CMakeFiles/main.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/CMakeFiles/edit_cache.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/CMakeFiles/rebuild_cache.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/libs/task_manager/CMakeFiles/task_manager.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/libs/task_manager/CMakeFiles/edit_cache.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/libs/task_manager/CMakeFiles/rebuild_cache.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/libs/general_utils/CMakeFiles/general_utils.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/libs/general_utils/CMakeFiles/edit_cache.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/libs/general_utils/CMakeFiles/rebuild_cache.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/tasks/CMakeFiles/tasks.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/tasks/CMakeFiles/edit_cache.dir
+/home/kyrylo/Documents/university/Algos/lab2/build/tasks/CMakeFiles/rebuild_cache.dir
