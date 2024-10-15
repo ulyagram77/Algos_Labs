@@ -1,4 +1,4 @@
-PROJECT_NAME=Algos Lab 2
+PROJECT_NAME=Algos Lab 3
 BIN_NAME=main
 
 all: build
