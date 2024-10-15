@@ -9,11 +9,11 @@ float generateRandomFloat(float min, float max) {
 }
 
 void printBinary(unsigned char byte) {
-    for (int i = 7; i >= 0; i--) {
-        int bit = (byte >> i) & 1;
-        printf("%d", bit);
-    }
-    printf(" ");
+  for (int i = 7; i >= 0; i--) {
+    int bit = (byte >> i) & 1;
+    printf("%d", bit);
+  }
+  printf("\n");
 }
 
 void measureTime(void (*func)(void *), void *arg) {
