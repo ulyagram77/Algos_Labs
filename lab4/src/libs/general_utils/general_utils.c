@@ -13,7 +13,7 @@ void printBinary(unsigned char byte) {
     int bit = (byte >> i) & 1;
     printf("%d", bit);
   }
-  printf("\n");
+  printf(" ");
 }
 
 void measureTime(void (*func)(void *), void *arg) {
