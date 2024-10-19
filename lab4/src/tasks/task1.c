@@ -1,44 +1,49 @@
 #include "general_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
+#define N 1000000000
 
 typedef enum { CHARGED, REPEATED_USE } Status;
 
 typedef enum { BATTERY_TYPE, CHARGER_TYPE } PowerSourceType;
 
 typedef struct {
-  unsigned int voltage : 10; // Напряжение батареи в десятых долях вольта (0 -
-                             // 1023, что позволяет хранить до 102.3 В)
-  unsigned int capacity : 12; // Ёмкость батареи в ампер-часах (0 - 4095,
-                              // например, для хранения до 409.5 Ah)
-  unsigned int chargeLevel : 7; // Уровень заряда в процентах (0-100)
-  unsigned int cellCount : 4; // Количество ячеек в батарее (до 15 ячеек)
+  unsigned int voltage : 10; // Напруга батареї в десятих частинах вольта (0 -
+                             // 1023, що дозволяє зберігати до 102.3 В)
+  unsigned int capacity : 12; // Ємність батареї в ампер-годинах (0 - 4095,
+                              // наприклад, для зберігання до 409.5 Ah)
+  unsigned int chargeLevel : 7; // Рівень заряду в відсотках (0-100)
+  unsigned int cellCount : 4; // Кількість осередків в батареї (до 15 осередків)
   Status status;
 } Battery;
 
 typedef struct {
-  unsigned int voltage : 10; // Напряжение зарядного устройства в десятых долях
+  unsigned int voltage : 10; // Напруга зарядного пристрою в десятих частинах
                              // вольта (0-1023, до 102.3 В)
-  unsigned int current : 10; // Ток зарядного устройства в десятых долях ампера
-                             // (0-1023, до 102.3 А)
+  unsigned int current : 10; // Струм зарядного пристрою в десятих частинах
+                             // ампера (0-1023, до 102.3 А)
   unsigned int
-      chargeTime : 12; // Время зарядки в минутах (0-4095, до 4095 минут)
-  unsigned int maxCapacity : 12; // Максимальная ёмкость аккумулятора, с которым
-                                 // можно работать (0-4095 Ah)
-  unsigned int portCount : 4; // Количество доступных зарядных портов (0-15)
+      chargeTime : 12; // Час зарядки в хвилинах (0-4095, до 4095 хвилин)
+  unsigned int maxCapacity : 12; // Максимальна ємність акумулятора, з яким
+                                 // можна працювати (0-4095 Ah)
+  unsigned int portCount : 4; // Кількість доступних зарядних портів (0-15)
   Status status;
 } Charger;
 
+// Об'єднання батареї та зарядного пристрою у одну варіативну частину
 typedef union {
   Battery battery;
   Charger charger;
 } PowerUnion;
 
+// Фінальна структура яку я буду досліджувати
 struct power_source {
   PowerSourceType
-      sourceType; // Тип источника питания (батарея или зарядное устройство)
-  PowerUnion source; // Вариативная часть (батарея или зарядное устройство)
-  float cost;        // Стоимость
+      sourceType; // Тип джерела живлення (батарея або зарядний пристрій)
+  PowerUnion source; // Варіативна частина (батарея або зарядний пристрій)
+  float cost;        // Вартість
 };
 
 void print_internal_int(int val) {
@@ -59,7 +64,6 @@ void print_internal_float(float val) {
 void print_binary_struct(void *ptr, size_t size) {
   unsigned char *byte = (unsigned char *)ptr;
   for (size_t i = 0; i < size; ++i) {
-    // printf("%d) ", i + 1);
     printBinary(byte[i]);
   }
   printf("\n");
@@ -117,6 +121,8 @@ void task1() {
   struct power_source batterySource = {
       BATTERY_TYPE, {.battery = {500, 3000, 80, 8, CHARGED}}, 150.0};
 
+  struct power_source chargerSource = {};
+
   struct power_source items[5] = {
       {BATTERY_TYPE, {.battery = {600, 4000, 90, 10, CHARGED}}, 175.0},
       {CHARGER_TYPE, {.charger = {250, 600, 100, 2000, 3, REPEATED_USE}}, 60.0},
@@ -138,4 +144,35 @@ void task1() {
 
   highlightText("Machine representation of array with structs: ", "blue");
   print_binary_array_of_struct(&items, 5);
+
+  highlightText(
+      "Access time testing for structs with alignment and without it: ",
+      "blue");
+
+  clock_t start, end;
+  double cpu_time_used;
+
+  start = clock();
+
+  for (int i = 0; i < N; i++) {
+    unsigned int v = batterySource.source.battery.voltage;
+    unsigned int c = batterySource.source.battery.capacity;
+    unsigned int cl = batterySource.source.battery.chargeLevel;
+    unsigned int cc = batterySource.source.battery.cellCount;
+    int s = batterySource.source.battery.status;
+
+    (void)v;
+    (void)c;
+    (void)cl;
+    (void)cc;
+    (void)s;
+  }
+
+  end = clock();
+
+  cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+  printf("Time for accessing struct fields (iterations \033[32m%d\033[0m): "
+         "%.2f seconds\n",
+         N, cpu_time_used);
 };
