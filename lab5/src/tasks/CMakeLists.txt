@@ -8,4 +8,5 @@ add_library(tasks STATIC ${SOURCE_FILES})
 target_link_libraries(tasks
     PRIVATE task_manager
     PRIVATE general_utils
+    PRIVATE sparse_table
 )

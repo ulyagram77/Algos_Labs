@@ -5,6 +5,7 @@ project(main LANGUAGES C)
 include_directories(
     libs/task_manager
     libs/general_utils
+    libs/sparse_table
     tasks
 )
 
@@ -12,6 +13,7 @@ add_executable(${PROJECT_NAME} main.c)
 
 add_subdirectory(libs/task_manager)
 add_subdirectory(libs/general_utils)
+add_subdirectory(libs/sparse_table)
 
 add_subdirectory(tasks)
 
@@ -19,4 +21,6 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE task_manager
     PRIVATE tasks
     PRIVATE general_utils
+    PRIVATE sparse_table
+    m
 )
