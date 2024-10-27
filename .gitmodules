@@ -10,3 +10,6 @@
 [submodule "lab5/src/libs"]
 	path = lab5/src/libs
 	url = https://github.com/ulyagram77/C-libs.git
+[submodule "lab6/src/libs"]
+	path = lab6/src/libs
+	url = https://github.com/ulyagram77/C-libs.git
