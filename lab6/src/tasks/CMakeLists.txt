@@ -9,4 +9,6 @@ target_link_libraries(tasks
     PRIVATE task_manager
     PRIVATE general_utils
     PRIVATE sparse_table
+    PRIVATE string_vector
+    PRIVATE string_block-linked
 )
