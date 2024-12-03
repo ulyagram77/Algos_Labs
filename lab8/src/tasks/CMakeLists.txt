@@ -8,10 +8,6 @@ add_library(tasks STATIC ${SOURCE_FILES})
 target_link_libraries(tasks
     PRIVATE task_manager
     PRIVATE general_utils
-    PRIVATE sparse_table
-    PRIVATE string_vector
-    PRIVATE string_block-linked
     PRIVATE linked_list
-    PRIVATE priority_queue_arr
-    PRIVATE priority_queue_list
+    PRIVATE lab8_list
 )

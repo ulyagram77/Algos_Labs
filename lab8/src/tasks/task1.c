@@ -1,77 +1,68 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "general_utils.h"
-#include "priority_queue_arr.h"
-#include "priority_queue_list.h"
+#include "lab8_list.h"
+
+int compare_firms(const void *a, const void *b)
+{
+  return strcmp(((BuildingFirm *)a)->name, (const char *)b);
+}
 
 void task1()
 {
-  PriorityQueue pq = init_priority_queue(5);
-  LPQ *lpq = init_lpq();
+  Node *firms = NULL; // firms list
 
-  push_priority_queue(&pq, 10, 1);
-  push_priority_queue(&pq, 20, 4);
-  push_priority_queue(&pq, 15, 2);
-  push_priority_queue(&pq, 69, 5);
+  char firm1[] = "Avantazh";
+  char firm2[] = "Kharkiv Bud Development";
+  char firm3[] = "StroyCity";
+  char firm4[] = "MegaBuild";
+  char firm5[] = "UrbanBuilders";
 
-  enqueue_lpq(lpq, 10, 1);
-  enqueue_lpq(lpq, 20, 4);
-  enqueue_lpq(lpq, 15, 2);
-  enqueue_lpq(lpq, 69, 5);
+  insert_head_linked_list(&firms, create_building_firm(firm1));
+  insert_head_linked_list(&firms, create_building_firm(firm2));
+  insert_head_linked_list(&firms, create_building_firm(firm3));
+  insert_head_linked_list(&firms, create_building_firm(firm4));
+  insert_head_linked_list(&firms, create_building_firm(firm5));
 
-  highlightText("Elements of LIST base priority queue:\n", "blue");
-  print_lpq(lpq);
-  printf("Memory allocated: \033[34m%zu\033[0m bytes\n", lpq->allocated_memory);
-  puts("");
+  BuildingFirm *builderA = (BuildingFirm *)firms->data;
+  insert_head_linked_list(&builderA->sublist, strdup("Block of flats"));
+  insert_head_linked_list(&builderA->sublist, strdup("Office Building"));
+  insert_head_linked_list(&builderA->sublist, strdup("Skyscraper 'Bluetech'"));
+  insert_head_linked_list(&builderA->sublist, strdup("Apartment Complex"));
 
-  highlightText("Elements of ARRAY priority queue:\n", "blue");
-  print_priority_queue(&pq);
-  printf("Memory allocated: \033[32m%zu\033[0m bytes\n", pq.allocated_memory);
-  puts("");
+  BuildingFirm *builderB = (BuildingFirm *)firms->next->data;
+  insert_head_linked_list(&builderB->sublist, strdup("Shopping Mall"));
+  insert_head_linked_list(&builderB->sublist, strdup("Business Center"));
+  insert_head_linked_list(&builderB->sublist, strdup("Residential Complex 'SunCity'"));
 
-  highlightText("Adding new element with highest priority to LIST priority queue:\n", "yellow");
-  enqueue_lpq(lpq, 100, 10);
-  print_lpq(lpq);
-  printf("Memory allocated: \033[32m%zu\033[0m bytes\n", lpq->allocated_memory);
-  puts("");
+  BuildingFirm *builderC = (BuildingFirm *)firms->next->next->data;
+  insert_head_linked_list(&builderC->sublist, strdup("Cultural Center"));
+  insert_head_linked_list(&builderC->sublist, strdup("Sports Arena"));
+  insert_head_linked_list(&builderC->sublist, strdup("Concert Hall"));
 
-  highlightText("Adding new element with highest priority to ARRAY priority queue:\n", "yellow");
-  push_priority_queue(&pq, 100, 10);
-  print_priority_queue(&pq);
-  printf("Memory allocated: \033[32m%zu\033[0m bytes\n", pq.allocated_memory);
-  puts("");
+  BuildingFirm *builderD = (BuildingFirm *)firms->next->next->next->data;
+  insert_head_linked_list(&builderD->sublist, strdup("Luxury Apartments"));
+  insert_head_linked_list(&builderD->sublist, strdup("High-Tech Skyscraper"));
+  insert_head_linked_list(&builderD->sublist, strdup("Eco-Friendly Office"));
 
-  highlightText("Adding new element with similar priority to LIST priority queue:\n", "blue");
-  enqueue_lpq(lpq, 777, 2);
-  print_lpq(lpq);
-  printf("Memory allocated: \033[32m%zu\033[0m bytes\n", lpq->allocated_memory);
-  puts("");
+  BuildingFirm *builderE = (BuildingFirm *)firms->next->next->next->next->data;
+  insert_head_linked_list(&builderE->sublist, strdup("Urban Park"));
+  insert_head_linked_list(&builderE->sublist, strdup("Family Housing Complex"));
+  insert_head_linked_list(&builderE->sublist, strdup("Community Center"));
 
-  highlightText("Adding new element with similar priority to ARRAY priority queue:\n", "blue");
-  push_priority_queue(&pq, 777, 2);
-  print_priority_queue(&pq);
-  printf("Memory allocated: \033[32m%zu\033[0m bytes\n", pq.allocated_memory);
-  puts("");
+  highlightText("ALL AVAIBLE FIRMS\n", "blue");
 
-  highlightText("Pop 4 elements from LIST priority queue:\n", "yellow");
-  dequeue_lpq(lpq);
-  dequeue_lpq(lpq);
-  dequeue_lpq(lpq);
-  dequeue_lpq(lpq);
-  print_lpq(lpq);
-  printf("Memory allocated: \033[32m%zu\033[0m bytes\n", lpq->allocated_memory);
-  puts("");
+  print_linked_list(firms, print_building_firm);
 
-  highlightText("Pop 4 elements from ARRAY priority queue:\n", "yellow");
-  pop_priority_queue(&pq);
-  pop_priority_queue(&pq);
-  pop_priority_queue(&pq);
-  pop_priority_queue(&pq);
-  print_priority_queue(&pq);
-  printf("Memory allocated: \033[32m%zu\033[0m bytes\n", pq.allocated_memory);
-  puts("");
+  highlightText("DELETING FIRMS: Avantazh, StroyCity, UrbanBuilders\n", "blue");
+  delete_node_linked_list(&firms, firm1, compare_firms, destroy_building_firm);
+  delete_node_linked_list(&firms, firm3, compare_firms, destroy_building_firm);
+  delete_node_linked_list(&firms, firm5, compare_firms, destroy_building_firm);
 
-  destroy_lpq(lpq);
-  destroy_priority_queue(&pq);
+  highlightText("ALL AVAIBLE FIRMS\n", "blue");
+  print_linked_list(firms, print_building_firm);
+
+  destroy_linked_list(&firms, destroy_building_firm);
 }
