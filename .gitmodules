@@ -19,3 +19,6 @@
 [submodule "lab8/src/libs"]
 	path = lab8/src/libs
 	url = https://github.com/ulyagram77/C-libs.git
+[submodule "lab9/src/libs"]
+	path = lab9/src/libs
+	url = https://github.com/ulyagram77/C-libs.git
