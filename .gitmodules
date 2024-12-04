@@ -22,3 +22,6 @@
 [submodule "lab9/src/libs"]
 	path = lab9/src/libs
 	url = https://github.com/ulyagram77/C-libs.git
+[submodule "new_name"]
+	path = lab10/src/libs
+	url = https://github.com/ulyagram77/C-libs.git
