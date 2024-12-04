@@ -6,10 +6,10 @@
 
 void task1()
 {
-  // Инициализация хеш-таблицы
+  int search_key = 19;
+
   ht_init();
 
-  // Считывание данных из файла
   FILE *file = fopen("data/data_20.txt", "r");
   if (file == NULL)
   {
@@ -25,23 +25,12 @@ void task1()
   }
   fclose(file);
 
-  // Демонстрация работы
-  printf("Хеш-таблица:\n");
+  highlightText("HASH TABLE WITH CHAINING", "blue");
+
   ht_print();
 
-  // Поиск элемента
-  printf("\nВведите ID для поиска: ");
-  scanf("%d", &id);
-  // Node *result = ht_search(id);
-  // if (result != NULL)
-  // {
-  //   printf("Найдено: ID: %d, Name: %s, Email: %s\n", result->id, result->name, result->email);
-  // }
-  // else
-  // {
-  //   printf("Элемент с ID %d не найден.\n", id);
-  // }
+  highlightText("\nSEARCHING IN HASH TABLE WITH CHAINING\n", "blue");
 
-  ht_linear_search(id);
-  ht_linear_search_with_barrier(id);
+  ht_linear_search(search_key);
+  ht_linear_search_with_barrier(search_key);
 }
