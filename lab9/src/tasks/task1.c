@@ -1,68 +1,117 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <time.h>
 
+#include "linked_list.h"
 #include "general_utils.h"
-#include "lab8_list.h"
 
-int compare_firms(const void *a, const void *b)
+int int_comparer(const void *a, const void *b)
 {
-  return strcmp(((BuildingFirm *)a)->name, (const char *)b);
+  return *(int *)a - *(int *)b;
+}
+
+void fill_linked_list(Node **head, int size)
+{
+  for (int i = 0; i < size; i++)
+  {
+    int *value = (int *)malloc(sizeof(int));
+    *value = generateRandomInt(1, 10000);
+    insert_head_linked_list(head, value);
+  }
+}
+
+void test_search(Node **head, void *key, CompareFunc comparer, int (*search_func)(Node *, void *, CompareFunc))
+{
+  clock_t start = clock();
+  int comparisons = search_func(*head, key, comparer);
+  clock_t end = clock();
+
+  double time_taken_ms = ((double)(end - start)) / CLOCKS_PER_SEC * 1000;
+
+  if (comparisons > 0 && comparisons <= 10000)
+  {
+    printf("Key found. Comparisons: %d \n\033[34m\033[0m Time: \033[32m%.3f\033[0m milliseconds\n", comparisons, time_taken_ms);
+  }
+  else
+  {
+    printf("Key not found. Comparisons: %d \n\033[34m\033[0m Time: \033[32m%.3f\033[0m milliseconds\n", comparisons, time_taken_ms);
+  }
+}
+
+int linear_search_linked_list(Node *head, void *key, CompareFunc comparer)
+{
+  int comparisons = 0;
+  Node *current = head;
+
+  while (current)
+  {
+    comparisons++;
+    if (comparer(current->data, key) == 0)
+    {
+      return comparisons;
+    }
+    current = current->next;
+  }
+  return comparisons;
+}
+
+int linear_search_with_barrier(Node **head, void *key, CompareFunc comparer)
+{
+  if (!*head)
+  {
+    return 0;
+  }
+
+  insert_head_linked_list(head, key);
+  int comparisons = 0;
+  Node *current = *head;
+
+  while (current)
+  {
+    comparisons++;
+    if (comparer(current->data, key) == 0)
+    {
+      break;
+    }
+    current = current->next;
+  }
+
+  delete_node_linked_list(head, key, comparer, NULL);
+  return comparisons;
+}
+
+void free_int_data(void *data)
+{
+  free(data);
 }
 
 void task1()
 {
-  Node *firms = NULL; // firms list
+  srand(time(NULL));
 
-  char firm1[] = "Avantazh";
-  char firm2[] = "Kharkiv Bud Development";
-  char firm3[] = "StroyCity";
-  char firm4[] = "MegaBuild";
-  char firm5[] = "UrbanBuilders";
+  int sizes[] = {20, 100, 1000, 10000};
+  int num_sizes = sizeof(sizes) / sizeof(sizes[0]);
 
-  insert_head_linked_list(&firms, create_building_firm(firm1));
-  insert_head_linked_list(&firms, create_building_firm(firm2));
-  insert_head_linked_list(&firms, create_building_firm(firm3));
-  insert_head_linked_list(&firms, create_building_firm(firm4));
-  insert_head_linked_list(&firms, create_building_firm(firm5));
+  for (int i = 0; i < num_sizes; i++)
+  {
+    int size = sizes[i];
+    Node *head = NULL;
 
-  BuildingFirm *builderA = (BuildingFirm *)firms->data;
-  insert_head_linked_list(&builderA->sublist, strdup("Block of flats"));
-  insert_head_linked_list(&builderA->sublist, strdup("Office Building"));
-  insert_head_linked_list(&builderA->sublist, strdup("Skyscraper 'Bluetech'"));
-  insert_head_linked_list(&builderA->sublist, strdup("Apartment Complex"));
+    printf("\n\033[34mTesting for list size: %d\033[0m\n", size);
+    fill_linked_list(&head, size);
 
-  BuildingFirm *builderB = (BuildingFirm *)firms->next->data;
-  insert_head_linked_list(&builderB->sublist, strdup("Shopping Mall"));
-  insert_head_linked_list(&builderB->sublist, strdup("Business Center"));
-  insert_head_linked_list(&builderB->sublist, strdup("Residential Complex 'SunCity'"));
+    int key = generateRandomInt(1, 1000);
+    printf("Searching for key: %d\n\n", key);
 
-  BuildingFirm *builderC = (BuildingFirm *)firms->next->next->data;
-  insert_head_linked_list(&builderC->sublist, strdup("Cultural Center"));
-  insert_head_linked_list(&builderC->sublist, strdup("Sports Arena"));
-  insert_head_linked_list(&builderC->sublist, strdup("Concert Hall"));
+    printf("\033[34m\033[0m Linear Search \033[34m\033[0m\n");
+    test_search(&head, &key, int_comparer, linear_search_linked_list);
+    puts("");
+    printf("\033[34m\033[0m Linear Search with Barrier \033[34m\033[0m\n");
+    test_search(&head, &key, int_comparer, (int (*)(Node *, void *, CompareFunc))linear_search_with_barrier);
+    puts("\n------------------------------");
 
-  BuildingFirm *builderD = (BuildingFirm *)firms->next->next->next->data;
-  insert_head_linked_list(&builderD->sublist, strdup("Luxury Apartments"));
-  insert_head_linked_list(&builderD->sublist, strdup("High-Tech Skyscraper"));
-  insert_head_linked_list(&builderD->sublist, strdup("Eco-Friendly Office"));
+    destroy_linked_list(&head, free_int_data);
+  }
 
-  BuildingFirm *builderE = (BuildingFirm *)firms->next->next->next->next->data;
-  insert_head_linked_list(&builderE->sublist, strdup("Urban Park"));
-  insert_head_linked_list(&builderE->sublist, strdup("Family Housing Complex"));
-  insert_head_linked_list(&builderE->sublist, strdup("Community Center"));
-
-  highlightText("ALL AVAIBLE FIRMS\n", "blue");
-
-  print_linked_list(firms, print_building_firm);
-
-  highlightText("DELETING FIRMS: Avantazh, StroyCity, UrbanBuilders\n", "blue");
-  delete_node_linked_list(&firms, firm1, compare_firms, destroy_building_firm);
-  delete_node_linked_list(&firms, firm3, compare_firms, destroy_building_firm);
-  delete_node_linked_list(&firms, firm5, compare_firms, destroy_building_firm);
-
-  highlightText("ALL AVAIBLE FIRMS\n", "blue");
-  print_linked_list(firms, print_building_firm);
-
-  destroy_linked_list(&firms, destroy_building_firm);
+  return 0;
 }
